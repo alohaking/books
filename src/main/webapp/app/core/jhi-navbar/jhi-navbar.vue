@@ -17,6 +17,12 @@
                         <span v-text="$t('global.menu.home')">Home</span>
                     </span>
                 </b-nav-item>
+                <b-nav-item to="/myBooks">
+                    <span>
+                        <font-awesome-icon icon="th-list" />
+                        <span>MyBooks</span>
+                    </span>
+                </b-nav-item>
                 <b-nav-item-dropdown
                     id="entity-menu"
                     v-if="authenticated"

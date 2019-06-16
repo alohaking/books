@@ -48,6 +48,7 @@ const Book = () => import('../entities/book/book.vue');
 const BookUpdate = () => import('../entities/book/book-update.vue');
 // prettier-ignore
 const BookDetails = () => import('../entities/book/book-details.vue');
+const MyBooks = () => import('../mybooks/my-book.vue');
 // jhipster-needle-add-entity-to-router-import - JHipster will import entities to the router here
 
 Vue.use(Router);
@@ -60,6 +61,11 @@ export default new Router({
       path: '/',
       name: 'Home',
       component: Home
+    },
+    {
+      path: '/myBooks',
+      name: 'MyBooks',
+      component: MyBooks
     },
     {
       path: '/forbidden',

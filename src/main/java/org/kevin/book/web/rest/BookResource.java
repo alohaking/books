@@ -1,28 +1,27 @@
 package org.kevin.book.web.rest;
 
-import org.kevin.book.domain.Book;
-import org.kevin.book.repository.BookRepository;
-import org.kevin.book.web.rest.errors.BadRequestAlertException;
-
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import org.kevin.book.domain.Book;
+import org.kevin.book.repository.BookRepository;
+import org.kevin.book.security.AuthoritiesConstants;
+import org.kevin.book.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -89,7 +88,7 @@ public class BookResource {
     /**
      * {@code GET  /books} : get all the books.
      *
-     * @param pageable the pagination information.
+     * @param pageable  the pagination information.
      * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of books in body.
      */
@@ -101,6 +100,29 @@ public class BookResource {
             page = bookRepository.findAllWithEagerRelationships(pageable);
         } else {
             page = bookRepository.findAll(pageable);
+        }
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(uriBuilder.queryParams(queryParams), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * just for demo
+     *
+     * @param pageable
+     * @param queryParams
+     * @param uriBuilder
+     * @param eagerload
+     * @return
+     */
+    @Secured(AuthoritiesConstants.USER)
+    @GetMapping("/books/self")
+    public ResponseEntity<List<Book>> getAllMyBooks(Pageable pageable, @RequestParam MultiValueMap<String, String> queryParams, UriComponentsBuilder uriBuilder, @RequestParam(required = false, defaultValue = "false") boolean eagerload) {
+        log.debug("REST request to get a page of Books");
+        Page<Book> page;
+        if (eagerload) {
+            page = bookRepository.findAllWithEagerRelationships(pageable);
+        } else {
+            page = bookRepository.findAllByOrderByShowTimeAsc(pageable);
         }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(uriBuilder.queryParams(queryParams), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());

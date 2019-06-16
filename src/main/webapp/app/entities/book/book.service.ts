@@ -23,6 +23,14 @@ export default class BookService {
     });
   }
 
+  public getMyBooks(paginationQuery?: any): Promise<any> {
+    return new Promise<any>(resolve => {
+      axios.get(`${baseApiUrl}/self?${buildPaginationQueryOpts(paginationQuery)}`).then(function(res) {
+        resolve(res);
+      });
+    });
+  }
+
   public delete(id): Promise<any> {
     return new Promise<any>(resolve => {
       axios.delete(`${baseApiUrl}/${id}`).then(function(res) {
