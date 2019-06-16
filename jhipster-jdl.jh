@@ -1,0 +1,22 @@
+entity Category {
+    name String
+}
+entity Label {
+	label String
+}
+entity Author {
+    name String required
+}
+entity Book {
+   name String required
+   description String
+   showTime LocalDate
+}
+relationship ManyToMany {
+    Book{label(label)} to Label{movie}
+}
+relationship ManyToOne {
+    Book{category(name)} to Category,
+    Book{author(name)} to Author
+}
+paginate Book with pagination
