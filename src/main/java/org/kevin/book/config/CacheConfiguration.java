@@ -43,6 +43,12 @@ public class CacheConfiguration {
             createCache(cm, org.kevin.book.domain.User.class.getName());
             createCache(cm, org.kevin.book.domain.Authority.class.getName());
             createCache(cm, org.kevin.book.domain.User.class.getName() + ".authorities");
+            createCache(cm, org.kevin.book.domain.Category.class.getName());
+            createCache(cm, org.kevin.book.domain.Label.class.getName());
+            createCache(cm, org.kevin.book.domain.Label.class.getName() + ".movies");
+            createCache(cm, org.kevin.book.domain.Author.class.getName());
+            createCache(cm, org.kevin.book.domain.Book.class.getName());
+            createCache(cm, org.kevin.book.domain.Book.class.getName() + ".labels");
             // jhipster-needle-ehcache-add-entry
         };
     }
